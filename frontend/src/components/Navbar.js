@@ -1,11 +1,17 @@
 import React from 'react';
 
-import { Link } from 'react-router-dom';
 import { useAuth } from '../context/auth';
 import {Navbar as NavBar, Nav} from 'react-bootstrap'
-
+import UsersService from '../services/UsersService';
+const usersService = new UsersService()
 export default function Navbar(){
-  const { authTokens } = useAuth();
+  const { authTokens, setAuthTokens } = useAuth();
+  function logOut(){
+      usersService.logOutUser()
+        .then(()=>{
+            setAuthTokens(null)
+        })
+  }
     return(
       <NavBar expand="lg">
             <NavBar.Brand >Roomo</NavBar.Brand>
@@ -21,7 +27,8 @@ export default function Navbar(){
                 :
                     <React.Fragment>
                         <Nav.Link href="/">Home</Nav.Link>
-                        
+                        <Nav.Link href="/profile">Profile</Nav.Link>
+                        <Nav.Link onClick={logOut}>Logout</Nav.Link>
 
                         
                     </React.Fragment>}

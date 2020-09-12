@@ -1,12 +1,34 @@
 import React, { useState } from 'react'
 import '../css/auth.css'
+import UsersService from '../services/UsersService'
+import { useAuth } from "../context/auth";
+import { Redirect } from 'react-router-dom';
+const  usersService  =  new  UsersService();
 export default function Register(){
 	const [username, setUsername] = useState("")
 	const [password, setPassword] = useState("")
 	const [email, setEmail] = useState("")
+
+	const [loading, setLoading] = useState(false)
+	const { authTokens, setAuthTokens } = useAuth();
+	function registerUser(){
+		setLoading(true)
+		usersService.registerUser({"username":username,"email":email,"password":password})
+		.then(result => {
+				setAuthTokens(result.data);
+		})
+	
+	
+	
+}
+	if(authTokens){
+		return <Redirect to="/profile/edit"/>
+	}
      return (
     <div className="limiter">
 		<div className="container-login100">
+		{loading?<div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+      <div className="lds-dual-ring"></div></div>:
 			<div className="wrap-login100 pt-5 login100-form validate-form">
 					<span className="login100-form-title  mb-4">
 						Welcome
@@ -31,7 +53,7 @@ export default function Register(){
 					</div>
 
 					<div className="container-login100-form-btn  pb-2 pt-4">
-						<button className="login100-form-btn">
+						<button className="login100-form-btn" onClick={registerUser}>
 							Register
 						</button>
 					</div>
@@ -45,7 +67,7 @@ export default function Register(){
 							</a>
 						
 					
-			</div>
+			</div>}
 		</div>
 	</div>
 	

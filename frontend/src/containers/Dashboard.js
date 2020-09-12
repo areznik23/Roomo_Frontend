@@ -1,6 +1,10 @@
 import React from 'react'
+import Deck from '../components/Deck'
 export default function Dashboard(){
+    
     return (
-        <div>Private</div>
+        <div>
+            <Deck/>
+        </div>
     )
-}
+    }
