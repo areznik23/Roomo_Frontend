@@ -22,7 +22,7 @@ export default function Register(){
 	
 }
 	if(authTokens){
-		return <Redirect to="/profile/edit"/>
+		return <Redirect to="/"/>
 	}
      return (
     <div className="limiter">

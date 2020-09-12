@@ -19,9 +19,13 @@ export default class UsersService{
         const url = `${API_URL}/api/users/logout`;
         return axios.post(url);
     }
-    getProfile(){
+    updateProfile(data){
         const url = `${API_URL}/api/users/profile`
-        return axios.get(url)
+        return axios.put(url,data,{
+            headers: {
+              'content-type': 'multipart/form-data'
+            }
+          })
     }
 
     
