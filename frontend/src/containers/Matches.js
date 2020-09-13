@@ -26,9 +26,10 @@ export default function Matches(){
     },[])
     function createMessage(){
         usersService.createMessage({"content":messageContent,"recipient":to, "sender":authTokens.user.id})
-            .then(result=>{
+            .then(()=>{
                 message.success("Message sent!")
                 setCreateMessageModal(false)
+                window.location.reload()
             })
     }
     function getInbox(){

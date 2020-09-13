@@ -56,5 +56,6 @@ code {
   margin:0px !important
 }
 textarea{
-  border:2px solid #eee !important
+  border:2px solid #eee !important;
+  padding:5px !important
 }
