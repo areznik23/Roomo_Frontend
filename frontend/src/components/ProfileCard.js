@@ -2,12 +2,13 @@ import React, { useState } from 'react'
 import '../css/profile.css'
 import { Tag, Radio } from 'antd';
 
-export default function ProfileCard(props){
+const ProfileCard = ({ edit, user, owned, option, loading }) => {
     const [bio, setBio] = useState("")
     const [personalityPreferences, setPersonalityPreferences] = useState("")
 
     return(
 
+      <div>{loading ? <div>loading...</div> :  
         <div className="card-container">
         <div className="upper-container">
            <div className="image-container">
@@ -17,18 +18,18 @@ export default function ProfileCard(props){
         <div className="lower-container">
            <div>
                
-              <h3 className="mb-3" style={{textDecoration:'underline', textDecorationColor:'#ccc'}}>{props.user.username}</h3>
+              <h3 className="mb-3" style={{textDecoration:'underline', textDecorationColor:'#ccc'}}>{option.username}</h3>
               <h4>Bio</h4>
            </div>
            <div>
-               {props.edit?<textarea rows={3} style={{width:'100%', border:'2px solid #eee'}} onChange={e=>setBio(e.target.value)} value={bio}/>:
+               {edit?<textarea rows={3} style={{width:'100%', border:'2px solid #eee'}} onChange={e=>setBio(e.target.value)} value={bio}/>:
               <p>sodales accumsan ligula. Aenean sed diam tristique,
                  fermentum mi nec, ornare arch.
               </p>}
            </div>
            <div className="mb-2">
                <h4>Preferences</h4>
-              {props.edit?
+              {edit?
               <div>
               <Radio.Group onChange={e=>setPersonalityPreferences(e.target.value)} value={personalityPreferences}>
               <Radio value="Quiet">Quiet</Radio>
@@ -46,7 +47,7 @@ export default function ProfileCard(props){
            </div>
            <div className="mb-2">
                <h4>Self Preferences</h4>
-               {props.edit?
+               {edit?
                <div>
                <Radio.Group onChange={e=>setPersonalityPreferences(e.target.value)} value={personalityPreferences}>
                <Radio value="Quiet">Quiet</Radio>
@@ -65,10 +66,13 @@ export default function ProfileCard(props){
            </div>
         
            <div>
-              {props.edit?<button className="btn">Save Profile</button>:props.owned&&<a href="/profile/edit" className="btn">Edit profile</a>}
+              {edit?<button className="btn">Save Profile</button>:owned&&<a href="/profile/edit" className="btn">Edit profile</a>}
            </div>
         </div>
      </div>
+     }</div>
 
     );
 }
+
+export default ProfileCard
