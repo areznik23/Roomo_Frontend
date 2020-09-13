@@ -3,6 +3,7 @@ import '../css/auth.css'
 import UsersService from '../services/UsersService'
 import { useAuth } from "../context/auth";
 import { Redirect } from 'react-router-dom';
+import { message } from 'antd';
 const  usersService  =  new  UsersService();
 export default function Register(){
 	const [username, setUsername] = useState("")
@@ -16,13 +17,21 @@ export default function Register(){
 		usersService.registerUser({"username":username,"email":email,"password":password})
 		.then(result => {
 				setAuthTokens(result.data);
+		}).catch(e=>{
+			var objectKeys = Object.keys(e.response.data)
+                console.log(objectKeys)
+                for(var i = 0;i<objectKeys.length;i++)
+                {
+                    message.error(objectKeys[i] + " : " + e.response.data[objectKeys[i]][0])
+				}
+				setLoading(false)
 		})
 	
 	
 	
 }
 	if(authTokens){
-		return <Redirect to="/profile/edit"/>
+		return <Redirect to="/"/>
 	}
      return (
     <div className="limiter">

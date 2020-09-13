@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import 'antd/dist/antd.css';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import Login from './containers/Login';
 import Register from './containers/Register'
 import PrivateRoute from './PrivateRoute';
@@ -10,6 +10,8 @@ import { AuthContext } from "./context/auth";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Profile from './containers/Profile';
 import axios from 'axios'
+import 'font-awesome/css/font-awesome.min.css';
+import Matches from './containers/Matches';
 function App() {
   const existingTokens = JSON.parse(localStorage.getItem("tokens"));
   const [authTokens, setAuthTokens] = useState(existingTokens);
@@ -20,10 +22,12 @@ function App() {
     if(authTokens)
     {
         axios.defaults.headers.common['Authorization'] = "Token " +authTokens.token
+        
     }
     else{
         delete axios.defaults.headers.common['Authorization']
     }
+console.log(authTokens)
   return (
     <AuthContext.Provider value={{ authTokens, setAuthTokens:setTokens }}>
     <div className="App">
@@ -34,6 +38,8 @@ function App() {
       <PrivateRoute exact path="/profile" component={Profile}/>
       <PrivateRoute exact path="/profile/edit" 
       component={() =><Profile edit={true}/> }/>
+      <PrivateRoute exact path="/matches" 
+      component={Matches}/>
                 <Route path="/login" component={Login} />
                 <Route path="/signup" component={Register} />
                 
