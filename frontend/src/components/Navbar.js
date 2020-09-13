@@ -27,6 +27,7 @@ export default function Navbar(){
                 :
                     <React.Fragment>
                         <Nav.Link href="/">Home</Nav.Link>
+                        <Nav.Link href="/dashboard">Find Roommates</Nav.Link>
                         <Nav.Link href="/matches">Matches</Nav.Link>
                         <Nav.Link href="/profile">Profile</Nav.Link>
                         <Nav.Link onClick={logOut}>Logout</Nav.Link>

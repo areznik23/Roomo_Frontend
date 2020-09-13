@@ -8,7 +8,7 @@ import axios from 'axios';
 import Carousel from 'react-bootstrap/Carousel'
 const usersService = new UsersService()
 
-export default function ProfileCard({ edit, user, owned, option, loading }){
+export default function ProfileCard({ edit, user, owned, loading }){
     const {authTokens,setAuthTokens} = useAuth()
     const [bio, setBio] = useState(authTokens.user.profile.bio)
     const [loudness, setLoudness] = useState(authTokens.user.profile.loudness)
@@ -86,7 +86,8 @@ export default function ProfileCard({ edit, user, owned, option, loading }){
         
     }
     return(
-
+       <React.Fragment>
+      {loading ? <div>loading...</div> :
         <div className="card-container">
         <div className="upper-container">
            <div className="image-container">
@@ -186,6 +187,8 @@ export default function ProfileCard({ edit, user, owned, option, loading }){
         </div>
         
      </div>
+               }
+               </React.Fragment>
 
     );
 }

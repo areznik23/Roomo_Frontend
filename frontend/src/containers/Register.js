@@ -18,12 +18,12 @@ export default function Register(){
 		.then(result => {
 				setAuthTokens(result.data);
 		}).catch(e=>{
-			var objectKeys = Object.keys(e.response.data)
-                console.log(objectKeys)
-                for(var i = 0;i<objectKeys.length;i++)
-                {
-                    message.error(objectKeys[i] + " : " + e.response.data[objectKeys[i]][0])
-				}
+			// var objectKeys = Object.keys(e.response.data)
+            //     console.log(objectKeys)
+            //     for(var i = 0;i<objectKeys.length;i++)
+            //     {
+            //         message.error(objectKeys[i] + " : " + e.response.data[objectKeys[i]][0])
+			// 	}
 				setLoading(false)
 		})
 	
