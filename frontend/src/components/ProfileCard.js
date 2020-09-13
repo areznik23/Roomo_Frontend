@@ -7,8 +7,9 @@ import Search from 'antd/lib/input/Search';
 import axios from 'axios';
 import Carousel from 'react-bootstrap/Carousel'
 const usersService = new UsersService()
-export default function ProfileCard(props) {
-    const { authTokens, setAuthTokens } = useAuth()
+
+export default function ProfileCard({ edit, user, owned, option, loading }){
+    const {authTokens,setAuthTokens} = useAuth()
     const [bio, setBio] = useState(authTokens.user.profile.bio)
     const [loudness, setLoudness] = useState(authTokens.user.profile.loudness)
     const [athleticism, setAthleticism] = useState(authTokens.user.profile.athleticism)
@@ -85,103 +86,102 @@ export default function ProfileCard(props) {
     return (
 
         <div className="card-container">
-            <div className="upper-container">
-                <div className="image-container">
-                    {props.edit ?
-                        <div>
-                            <img src={imagePreview} style={{ border: '4px solid white' }} />
-                            <label htmlFor="profilePic" className="border border-gray rounded mt-2 cursor-pointer px-2 py-1 bg-white">
-                                <a className="h-full w-full" >
-                                    <i className="fa fa-upload pr-2" aria-hidden="true"></i>Upload
+        <div className="upper-container">
+           <div className="image-container">
+               {edit?
+               <div>
+               <img src={imagePreview} style={{border:'4px solid white'}}/>
+               <label htmlFor="profilePic" className="border border-gray rounded mt-2 cursor-pointer px-2 py-1 bg-white">
+                <a className="h-full w-full" >
+                    <i className="fa fa-upload pr-2" aria-hidden="true"></i>Upload
                 </a>
-                            </label>
-                            <input hidden type="file" accept="image/png, image/jpeg" onChange={handleImageChange}
-                                id="profilePic" /></div>
-                        :
-                        <img src={props.user.profile.image} style={{ border: '4px solid white' }} />}
-                </div>
-            </div>
-            <div className="lower-container">
+            </label>
+            <input hidden type="file" accept="image/png, image/jpeg" onChange={handleImageChange}
+                id="profilePic" /></div>
+               :
+              <img src={user.profile.image} style={{border:'4px solid white'}} />}
+           </div>
+        </div>
+        <div className="lower-container">
 
+               
+              <h3 className="mb-3" style={{textDecoration:'underline', textDecorationColor:'#ccc'}}>{user.username}</h3>
+              {edit?
+              university&&university.length>0?
+              <div style={{border:'2px solid #eee', padding:'20px'}}>{university} <a style={{textDecoration:'underline'}} onClick={()=>setUniversity("")}>Change</a></div>
+              :
+              <div className="mb-2">
+              <Search onChange={e=>setSearchTerm(e.target.value)} onSearch={searchUniversities} placeholder="Search universities..." value={searchTerm}></Search>
+              {universities.map(item=>(
+              <Button key={item.name} className="w-100" onClick={()=>setUniversity(item.name)}>{item.name.substr(0,36)}...</Button>
+              ))}</div>:
+              <div><span style={{color:'#4a5568', background:'#edf2f7', fontWeight:'600', fontSize: '.875rem', whiteSpace:'nowrap'}} className="inline-block rounded-lg px-3 py-1 mr-2">{user.profile.university}</span></div>}
 
-                <h3 className="mb-3" style={{ textDecoration: 'underline', textDecorationColor: '#ccc' }}>{props.user.username}</h3>
-                {props.edit ?
-                    university && university.length > 0 ?
-                        <div style={{ border: '2px solid #eee', padding: '20px' }}>{university} <a style={{ textDecoration: 'underline' }} onClick={() => setUniversity("")}>Change</a></div>
-                        :
-                        <div className="mb-2">
-                            <Search onChange={e => setSearchTerm(e.target.value)} onSearch={searchUniversities} placeholder="Search universities..." value={searchTerm}></Search>
-                            {universities.map(item => (
-                                <Button key={item.name} className="w-100" onClick={() => setUniversity(item.name)}>{item.name.substr(0, 36)}...</Button>
-                            ))}</div> :
-                    <div><span style={{ color: '#4a5568', background: '#edf2f7', fontWeight: '600', fontSize: '.875rem', whiteSpace: 'nowrap' }} className="inline-block rounded-lg px-3 py-1 mr-2">{props.user.profile.university}</span></div>}
-
-                <div className="m-3">
-                    {props.edit ? <Radio.Group onChange={e => setGender(e.target.value)} value={gender}>
-                        <Radio value="Male"><i className="fa fa-male"> </i> Male</Radio>
-                        <Radio value="Female"><i className="fa fa-female"> </i> Female</Radio>
-                    </Radio.Group> : <div><i className={"fa fa-" + props.user.profile.gender.toLowerCase()}> </i> {props.user.profile.gender}</div>}
-                </div>
-
-                {props.edit ?
-                    <div><label htmlFor="galleryPics" className="border border-gray rounded mt-2 cursor-pointer px-2 py-1 bg-white">
-                        <a className="h-full w-full" >
-                            <i className="fa fa-upload pr-2" aria-hidden="true"></i>Upload At Least 3 Pictures
+              <div className="m-3">
+              {edit?<Radio.Group onChange={e=>setGender(e.target.value)} value={gender}>
+           <Radio value="Male"><i className="fa fa-male"> </i> Male</Radio>
+           <Radio value="Female"><i className="fa fa-female"> </i> Female</Radio>
+         </Radio.Group>:<div><i className={"fa fa-" +user.profile.gender.toLowerCase()}> </i> {user.profile.gender}</div>}
+         </div>
+              
+           {edit?
+           <div><label htmlFor="galleryPics" className="border border-gray rounded mt-2 cursor-pointer px-2 py-1 bg-white">
+           <a className="h-full w-full" >
+               <i className="fa fa-upload pr-2" aria-hidden="true"></i>Upload At Least 3 Pictures
            </a>
-
-                    </label>
-                        <input hidden type="file" accept="image/png, image/jpeg" onChange={handleGalleryImageChange}
-                            id="galleryPics" />
-
-                        <Progress percent={galleryImages.length * 34} showInfo={false} />
-                    </div>
-                    :
-                    <Carousel activeIndex={index} onSelect={handleSelect} className="mb-2" >
-                        {props.user.profile.gallery_images.map(image => (
-                            <Carousel.Item key={image.id}>
-                                <img
-                                    className="d-block w-100" style={{ borderRadius: '5%', height: '450px', objectFit: 'cover' }}
-                                    src={image.image}
-                                />
-                            </Carousel.Item>
-                        ))}
-                    </Carousel>}
-
-                <div style={{ marginRight: '5%' }}>
-                    <h4>Bio</h4>
-                    {props.edit ? <textarea rows={3} placeholder="Let potential roomates know who you are..." style={{ width: '100%', border: '2px solid #eee', padding: '10px' }} onChange={e => setBio(e.target.value)} value={bio} /> :
-                        <p>{props.user.profile.bio}
-                        </p>}
-                </div>
-                <div className="mb-2">
-                    <h4>Self Preferences</h4>
-                    {props.edit ?
-                        <div>
-                            <div>
-                                <Radio.Group onChange={e => setLoudness(e.target.value)} value={loudness}>
-                                    <Radio value="Quiet">Quiet</Radio>
-                                    <Radio value="Outgoing">Outgoing</Radio>
-                                </Radio.Group></div>
-                            <div>
-                                <Radio.Group onChange={e => setMusicality(e.target.value)} value={musicality}>
-                                    <Radio value="Musical">Musical</Radio>
-                                    <Radio value="Non-musical">Non-musical</Radio>
-                                </Radio.Group></div>
-                            <div>
-                                <Radio.Group onChange={e => setAthleticism(e.target.value)} value={athleticism}>
-                                    <Radio value="Athletic">Athletic</Radio>
-                                    <Radio value="Nerdy">Nerdy</Radio>
-                                </Radio.Group></div></div> :
-                        <div>
-                            <Tag color="blue">{props.user.profile.loudness}</Tag><Tag color="blue">{props.user.profile.athleticism}</Tag><Tag color="blue">{props.user.profile.musicality}</Tag></div>}
-                </div>
-
-
+           
+       </label>
+       <input hidden type="file" accept="image/png, image/jpeg" onChange={handleGalleryImageChange}
+           id="galleryPics" />
+           
+           <Progress percent={galleryImages.length*34} showInfo={false} />
+           </div>
+           :
+           <Carousel activeIndex={index} onSelect={handleSelect} className="mb-2" >
+               {user.profile.gallery_images.map(image=>(
+      <Carousel.Item key={image.id}>
+        <img
+          className="d-block w-100" style={{borderRadius:'5%', height:'450px', objectFit:'cover'}}
+          src={image.image}
+        />
+      </Carousel.Item>
+               ))}
+    </Carousel>}
+    
+           <div style={{marginRight:'5%'}}>
+           <h4>Bio</h4>
+               {edit?<textarea rows={3} placeholder="Let potential roomates know who you are..." style={{width:'100%', border:'2px solid #eee', padding:'10px'}} onChange={e=>setBio(e.target.value)} value={bio}/>:
+              <p>{user.profile.bio}
+              </p>}
+           </div>
+           <div className="mb-2">
+               <h4>Self Preferences</h4>
+               {edit?
+               <div>
                 <div>
-                    {props.edit ? <button className="btn" onClick={updateProfile}>Save Profile</button> : props.owned && <a href="/profile/edit" className="btn">Edit profile</a>}
-                </div>
-            </div>
-
+               <Radio.Group onChange={e=>setLoudness(e.target.value)} value={loudness}>
+               <Radio value="Quiet">Quiet</Radio>
+               <Radio value="Outgoing">Outgoing</Radio>
+             </Radio.Group></div>
+             <div>
+             <Radio.Group onChange={e=>setMusicality(e.target.value)} value={musicality}>
+             <Radio value="Musical">Musical</Radio>
+             <Radio value="Non-musical">Non-musical</Radio>
+           </Radio.Group></div>
+           <div>
+           <Radio.Group onChange={e=>setAthleticism(e.target.value)} value={athleticism}>
+           <Radio value="Athletic">Athletic</Radio>
+           <Radio value="Nerdy">Nerdy</Radio>
+         </Radio.Group></div></div>:
+         <div>
+              <Tag color="blue">{user.profile.loudness}</Tag><Tag color="blue">{user.profile.athleticism}</Tag><Tag color="blue">{user.profile.musicality}</Tag></div>}
+           </div>
+           
+        
+           <div>
+              {edit?<button className="btn" onClick={updateProfile}>Save Profile</button>:owned&&<a href="/profile/edit" className="btn">Edit profile</a>}
+           </div>
+        </div>
         </div>
 
     );
