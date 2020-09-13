@@ -23,15 +23,14 @@ export default function ProfileCard({ edit, user, owned, loading }){
     const [index, setIndex] = useState(0);
     const [galleryImages, setGalleryImages] = useState(authTokens.user.profile.gallery_images)
 
-  const handleSelect = (selectedIndex, e) => {
-    setIndex(selectedIndex);
-  };
-    function updateProfile(){
-        if(bio.length==0||loudness.length==0||athleticism.length==0||musicality.length==0||gender.length==0||university.length==0||galleryImages.length<3)
-        {
+    const handleSelect = (selectedIndex, e) => {
+        setIndex(selectedIndex);
+    };
+    function updateProfile() {
+        if (bio.length == 0 || loudness.length == 0 || athleticism.length == 0 || musicality.length == 0 || gender.length == 0 || university.length == 0 || galleryImages.length < 3) {
             message.error("Please fill out all fields...")
         }
-        else{
+        else {
             let form_data = new FormData();
             form_data.append('bio', bio);
             form_data.append('loudness', loudness);
@@ -39,51 +38,50 @@ export default function ProfileCard({ edit, user, owned, loading }){
             form_data.append('musicality', musicality);
             form_data.append('gender', gender);
             form_data.append('university', university);
-            if(image!=null)
-            {
+            if (image != null) {
                 form_data.append('image', image, image.name);
             }
             /* form_data.append('gallery_images[]', galleryImages) */
-            
+
             /* form_data.append('') */
             usersService.updateProfile(form_data)
-                .then(result=>{
+                .then(result => {
                     message.success("Profile updated!")
                     let auth = authTokens
-                    auth.user.profile=result.data
+                    auth.user.profile = result.data
                     setAuthTokens(auth)
-                    window.location.href="/profile"
+                    window.location.href = "/profile"
                 })
 
-            }
-        
+        }
+
     }
-    function searchUniversities(){
-        axios.get('http://universities.hipolabs.com/search?name='+searchTerm.replace(/ /g, '%20'))
-            .then(result=>{
-                setUniversities(result.data.slice(0,10))
+    function searchUniversities() {
+        axios.get('http://universities.hipolabs.com/search?name=' + searchTerm.replace(/ /g, '%20'))
+            .then(result => {
+                setUniversities(result.data.slice(0, 10))
             })
     }
-    function handleImageChange(e){
+    function handleImageChange(e) {
         setImage(e.target.files[0])
-     
-       setImagePreview(URL.createObjectURL(e.target.files[0]))
+
+        setImagePreview(URL.createObjectURL(e.target.files[0]))
     }
-    function handleGalleryImageChange(e){
+    function handleGalleryImageChange(e) {
         for (let i = 0; i < e.target.files.length; i++) {
             let form_data = new FormData();
             form_data.append('image', e.target.files[i], e.target.files[i].name)
             form_data.append('profile', authTokens.user.profile.id)
             usersService.createGalleryImage(form_data)
-                .then(result=>{
-                    setGalleryImages(oldArray=>[...oldArray,result.data])
-                    
+                .then(result => {
+                    setGalleryImages(oldArray => [...oldArray, result.data])
+
                 })
         }
-        
-        
-        
-        
+
+
+
+
     }
     return(
        <React.Fragment>

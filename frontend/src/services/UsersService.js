@@ -43,6 +43,18 @@ export default class UsersService{
         const url = `${API_URL}/api/users/messages/sent`
         return axios.get(url)
     }
+    getUsers(){
+        const url = `${API_URL}/api/users/all`
+        return axios.get(url)
+    }
+    createMessage(message){
+        const url=`${API_URL}/api/users/messages`
+        return axios.post(url, message)
+    }
+    createReply(reply){
+        const url=`${API_URL}/api/users/messages/reply`
+        return axios.post(url, reply)
+    }
 
     
 }

@@ -13,3 +13,6 @@
     margin: 0;
     padding-top: 6px;
 }
+.table{
+    cursor: pointer;
+}
