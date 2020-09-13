@@ -49,3 +49,9 @@ code {
       transform: rotate(360deg);
   }
 }
+.carousel-item{
+  padding:3%;
+}
+.carousel-slide{
+  margin:0px !important
+}

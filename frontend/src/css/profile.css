@@ -1,6 +1,6 @@
 
 .card-container{
-width: 300px;
+width: 550px;
 height: auto;
 background: #FFF;
 border-radius: 6px;
@@ -15,7 +15,7 @@ background: #7F00FF;
 .image-container{
 
 border-radius: 50%;
-transform: translate(100px,100px);
+transform: translate(42%,110%);
 }
 .image-container img{
 width: 80px;

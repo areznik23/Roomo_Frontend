@@ -27,6 +27,22 @@ export default class UsersService{
             }
           })
     }
+    createGalleryImage(data){
+        const url = `${API_URL}/api/users/profile/gallery`
+        return axios.post(url,data,{
+            headers: {
+              'content-type': 'multipart/form-data'
+            }
+          })
+    }
+    getInbox(){
+        const url = `${API_URL}/api/users/messages/inbox`
+        return axios.get(url)
+    }
+    getSent(){
+        const url = `${API_URL}/api/users/messages/sent`
+        return axios.get(url)
+    }
 
     
 }

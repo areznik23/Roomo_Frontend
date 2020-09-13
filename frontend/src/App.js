@@ -11,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Profile from './containers/Profile';
 import axios from 'axios'
 import 'font-awesome/css/font-awesome.min.css';
+import Matches from './containers/Matches';
 function App() {
   const existingTokens = JSON.parse(localStorage.getItem("tokens"));
   const [authTokens, setAuthTokens] = useState(existingTokens);
@@ -37,6 +38,8 @@ console.log(authTokens)
       <PrivateRoute exact path="/profile" component={Profile}/>
       <PrivateRoute exact path="/profile/edit" 
       component={() =><Profile edit={true}/> }/>
+      <PrivateRoute exact path="/matches" 
+      component={Matches}/>
                 <Route path="/login" component={Login} />
                 <Route path="/signup" component={Register} />
                 
