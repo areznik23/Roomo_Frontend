@@ -7,6 +7,7 @@ import Register from './containers/Register'
 import PrivateRoute from './PrivateRoute';
 import Dashboard from './containers/Dashboard'
 import Home from './containers/Home'
+import Matches from './containers/Matches'
 import { AuthContext } from "./context/auth";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Profile from './containers/Profile';
@@ -33,6 +34,7 @@ function App() {
       <Switch>
       <PrivateRoute exact path="/dashboard" component={Dashboard}/>
       <PrivateRoute exact path="/profile" component={Profile}/>
+      <PrivateRoute exact path="/matches" component={Matches}/>
       <PrivateRoute exact path="/" component={Home}/>
       <PrivateRoute exact path="/profile/edit" 
       component={() =><Profile edit={true}/> }/>

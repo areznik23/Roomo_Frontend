@@ -43,9 +43,14 @@ export default class UsersService{
         const url = `${API_URL}/api/users/messages/sent`
         return axios.get(url)
     }
-    getUsers(){
+    getUsers(user){
+        console.log(user.id)
         const url = `${API_URL}/api/users/all`
-        return axios.get(url)
+        return axios.get(url, {
+            params : {
+                pk : user.id
+            }
+        })
     }
     createMessage(message){
         const url=`${API_URL}/api/users/messages`

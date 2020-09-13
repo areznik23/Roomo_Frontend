@@ -40,8 +40,9 @@ export default function Matches(){
             })
     }
     function getAllUsers(){
-        usersService.getUsers()
+        usersService.getUsers(authTokens.user)
             .then(result=>{
+                console.log(result)
                 setUsers(result.data)
             })
             
